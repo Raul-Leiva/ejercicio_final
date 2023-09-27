@@ -41,6 +41,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.17.2"
+  dni_nie_validator:
+    dependency: "direct main"
+    description:
+      name: dni_nie_validator
+      sha256: "00722a2ad72061f86e2c3e78870c4dd28fd9c8a0be81506ccafeeb8d015edbfa"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.0.2"
   fake_async:
     dependency: transitive
     description:
