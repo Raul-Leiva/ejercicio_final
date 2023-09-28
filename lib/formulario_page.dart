@@ -4,6 +4,8 @@ import 'package:dni_nie_validator/dni_nie_validator.dart';
 
 const List<String> list = <String>['Particular', 'Empresa'];
 
+var opcion = "";
+
 class ClaseFormulario extends StatefulWidget {
   const ClaseFormulario({super.key});
 
@@ -36,10 +38,9 @@ class Formulario extends StatefulWidget {
 }
 
 class StateClaseFormulario extends State<Formulario> {
+  List<Usuarios> listaUsuarios = List.empty(growable: true);
   final _formKey = GlobalKey<FormState>();
   String dropdownValue = list.first;
-  List<Usuarios> listaParticular = List.empty(growable: true);
-  List<Usuarios> listaEmpresa = List.empty(growable: true);
 
   TextEditingController nombreController = TextEditingController();
   TextEditingController apellido1Controller = TextEditingController();
@@ -62,28 +63,22 @@ class StateClaseFormulario extends State<Formulario> {
       }
     });
   }
-  Usuarios usuarioAtributos(){
+
+  Usuarios usuarioAtributos() {
     var nombre = nombreController.text;
     var apellido1 = apellido1Controller.text;
     var apellido2 = apellido2Controller.text;
     var fecha = fechaController.text;
     var DNI = DNIController.text;
+    var tipo = opcion;
 
-    return Usuarios(nombre, apellido1, apellido2, fecha, DNI);
+    return Usuarios(nombre, apellido1, apellido2, fecha, DNI, tipo);
   }
-  
-  agregarUsuario() {
-    
 
-    /*var usuario = usuarioAtributos();
-    if (clickadoMates) {
-      listaAlumnosMates.add(usuario);
-    }
-    if (clickadoLengua) {
-      listaAlumnosLengua.add(usuario);
-    }
-    listaAlumnosLengua;
-    listaAlumnosMates;*/
+  agregarUsuario() {
+    var usuario = usuarioAtributos();
+    listaUsuarios.add(usuario);
+    listaUsuarios;
   }
 
   String? validarCampo(String? valorCampo) {
@@ -95,12 +90,10 @@ class StateClaseFormulario extends State<Formulario> {
 
   _validateDocument(String value) {
     String _validation = '';
-    if (value.isValidDNI()) {
-      _validation = 'DNI Valid';
-    } else if (value.isValidNIE()) {
-      _validation = 'NIE Valid';
+    if (value.isValidDNI() || value.isValidNIE()) {
+      return null;
     } else {
-      _validation = 'Invalid document';
+      _validation = 'DNI/NIE inválido';
     }
     return _validation;
   }
@@ -164,7 +157,7 @@ class StateClaseFormulario extends State<Formulario> {
             onTap: () {
               crearFecha();
             },
-            decoration: const InputDecoration(hintText: "fecha"),
+            decoration: const InputDecoration(hintText: "Fecha de nacimmiento"),
           ),
           DropdownMenu<String>(
             initialSelection: list.first,
@@ -175,10 +168,7 @@ class StateClaseFormulario extends State<Formulario> {
             },
             dropdownMenuEntries:
                 list.map<DropdownMenuEntry<String>>((String value) {
-              return DropdownMenuEntry<String>(
-                value: value,
-                label: value
-                );
+              return DropdownMenuEntry<String>(value: opcion, label: value);
             }).toList(),
           ),
           Padding(
@@ -186,6 +176,7 @@ class StateClaseFormulario extends State<Formulario> {
             child: ElevatedButton(
               onPressed: () {
                 if (_formKey.currentState!.validate()) {
+                  agregarUsuario();
                   ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(content: Text('Usuario Guardado')));
                 }
@@ -193,8 +184,60 @@ class StateClaseFormulario extends State<Formulario> {
               child: const Text('Guardar'),
             ),
           ),
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 16.0),
+            child: ElevatedButton(
+              onPressed: () {
+                Navigator.pop(context, widget.key);
+                ScaffoldMessenger.of(context)
+                    .showSnackBar(const SnackBar(content: Text('Saliendo')));
+              },
+              child: const Text('Volver'),
+            ),
+          ),
         ],
       ),
     );
   }
+}
+/*class ClaseistaUsuarios extends StatefulWidget {
+  const ClaseistaUsuarios({super.key});
+
+  @override
+  StateListaUsuarios createState() => StateListaUsuarios();
+}
+class StateListaUsuarios extends State<ClaseistaUsuarios>{
+      eliminarElemento(int indice){
+    setState(() {
+      listaUsuarios.removeAt(indice);
+    });
   }
+  tratarElemento(BuildContext context, int indice){
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(listaUsuarios[indice].toString())));
+  }
+  
+   @override
+  Widget build(BuildContext context) {
+    return ListView.builder(
+            itemCount: listaUsuarios.length,
+            itemBuilder: (context, index){
+              return Dismissible(
+                key: Key(listaUsuarios[index].toString()), 
+                onDismissed: (direction) {
+                  eliminarElemento(index);
+                },
+                child: Card(
+                  child: ListTile(
+                    title: Text(listaUsuarios[index].toString()),
+                    onTap: () {
+                      tratarElemento(context, index);
+                    },
+                  ),
+                ),
+                );
+        
+            },
+          );
+  }
+}
+*/

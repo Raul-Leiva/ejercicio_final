@@ -4,6 +4,7 @@ class Usuarios {
   var apellido2 = "";
   var DNI= "";
   var fecha = "";
+  var tipo = "";
 
-  Usuarios(String nombre, String apellido1, String apellido2, String fecha, String dni);
+  Usuarios(String nombre, String apellido1, String apellido2, String fecha, String dni, String tipo);
 }

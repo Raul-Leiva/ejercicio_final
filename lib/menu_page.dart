@@ -28,6 +28,11 @@ class StateClaseMenu extends State<ClaseMenu> {
                 },
                 child: const Text('Formulario'),
               ),
+              ElevatedButton(
+                onPressed: (){
+                  Navigator.pushNamed(context, '/formulario/listview');
+                }, 
+                child: const Text('Lista usuarios')),
             ],
           ),
         ],
