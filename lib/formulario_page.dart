@@ -1,10 +1,11 @@
+import 'package:ejercicio_final/menu_page.dart';
 import 'package:ejercicio_final/usuarios.dart';
 import 'package:flutter/material.dart';
 import 'package:dni_nie_validator/dni_nie_validator.dart';
 
-const List<String> list = <String>['Particular', 'Empresa'];
-
 var opcion = "";
+var usuario = "";
+const List<String> list = <String>['Particular', 'Empresa'];
 
 class ClaseFormulario extends StatefulWidget {
   const ClaseFormulario({super.key});
@@ -18,14 +19,11 @@ class StateFormulario extends State<ClaseFormulario> {
   Widget build(BuildContext context) {
     const appTitle = 'Formulario';
 
-    return MaterialApp(
-      title: appTitle,
-      home: Scaffold(
-        appBar: AppBar(
-          title: const Text(appTitle),
-        ),
-        body: const Formulario(),
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text(appTitle),
       ),
+      body: const Formulario(),
     );
   }
 }
@@ -38,7 +36,6 @@ class Formulario extends StatefulWidget {
 }
 
 class StateClaseFormulario extends State<Formulario> {
-  List<Usuarios> listaUsuarios = List.empty(growable: true);
   final _formKey = GlobalKey<FormState>();
   String dropdownValue = list.first;
 
@@ -46,7 +43,8 @@ class StateClaseFormulario extends State<Formulario> {
   TextEditingController apellido1Controller = TextEditingController();
   TextEditingController apellido2Controller = TextEditingController();
   TextEditingController fechaController = TextEditingController();
-  TextEditingController DNIController = TextEditingController();
+  TextEditingController dniController = TextEditingController();
+  TextEditingController tipoUsuarioController = TextEditingController();
 
   crearFecha() async {
     DateTime? fechaSeleccionada = await showDatePicker(
@@ -69,10 +67,10 @@ class StateClaseFormulario extends State<Formulario> {
     var apellido1 = apellido1Controller.text;
     var apellido2 = apellido2Controller.text;
     var fecha = fechaController.text;
-    var DNI = DNIController.text;
-    var tipo = opcion;
+    var dni = dniController.text;
+    var tipo = tipoUsuarioController.text;
 
-    return Usuarios(nombre, apellido1, apellido2, fecha, DNI, tipo);
+    return Usuarios(nombre, apellido1, apellido2, fecha, dni, tipo);
   }
 
   agregarUsuario() {
@@ -89,13 +87,13 @@ class StateClaseFormulario extends State<Formulario> {
   }
 
   _validateDocument(String value) {
-    String _validation = '';
+    String validation = '';
     if (value.isValidDNI() || value.isValidNIE()) {
       return null;
     } else {
-      _validation = 'DNI/NIE inválido';
+      validation = 'DNI/NIE inválido';
     }
-    return _validation;
+    return validation;
   }
 
   @override
@@ -142,11 +140,11 @@ class StateClaseFormulario extends State<Formulario> {
           ),
           TextFormField(
             validator: (value) => _validateDocument(value!),
-            controller: DNIController,
+            controller: dniController,
             decoration: InputDecoration(
               labelText: "DNI",
               suffixIcon: IconButton(
-                onPressed: () => DNIController.clear(),
+                onPressed: () => dniController.clear(),
                 icon: const Icon(Icons.clear),
               ),
             ),
@@ -159,85 +157,53 @@ class StateClaseFormulario extends State<Formulario> {
             },
             decoration: const InputDecoration(hintText: "Fecha de nacimmiento"),
           ),
-          DropdownMenu<String>(
-            initialSelection: list.first,
-            onSelected: (String? value) {
-              setState(() {
-                dropdownValue = value!;
-              });
-            },
-            dropdownMenuEntries:
-                list.map<DropdownMenuEntry<String>>((String value) {
-              return DropdownMenuEntry<String>(value: opcion, label: value);
-            }).toList(),
-          ),
           Padding(
-            padding: const EdgeInsets.symmetric(vertical: 16.0),
-            child: ElevatedButton(
-              onPressed: () {
-                if (_formKey.currentState!.validate()) {
-                  agregarUsuario();
-                  ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text('Usuario Guardado')));
-                }
+            padding:
+                const EdgeInsets.symmetric(vertical: 16.0, horizontal: 16.0),
+            child: DropdownMenu<String>(
+              controller: tipoUsuarioController,
+              initialSelection: list.first,
+              onSelected: (String? value) {
+                setState(() {
+                  dropdownValue = value!;
+                });
               },
-              child: const Text('Guardar'),
+              dropdownMenuEntries:
+                  list.map<DropdownMenuEntry<String>>((String value) {
+                return DropdownMenuEntry<String>(value: value, label: value);
+              }).toList(),
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 16.0),
-            child: ElevatedButton(
-              onPressed: () {
-                Navigator.pop(context, widget.key);
-                ScaffoldMessenger.of(context)
-                    .showSnackBar(const SnackBar(content: Text('Saliendo')));
-              },
-              child: const Text('Volver'),
+          Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+            Padding(
+              padding:
+                  const EdgeInsets.symmetric(vertical: 16.0, horizontal: 16.0),
+              child: ElevatedButton(
+                onPressed: () {
+                  if (_formKey.currentState!.validate()) {
+                    agregarUsuario();
+                    ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(content: Text('Usuario Guardado')));
+                  }
+                },
+                child: const Text('Guardar'),
+              ),
             ),
-          ),
+            Padding(
+              padding:
+                  const EdgeInsets.symmetric(vertical: 16.0, horizontal: 16.0),
+              child: ElevatedButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                  ScaffoldMessenger.of(context)
+                      .showSnackBar(const SnackBar(content: Text('Saliendo')));
+                },
+                child: const Text('Volver'),
+              ),
+            ),
+          ])
         ],
       ),
     );
   }
 }
-/*class ClaseistaUsuarios extends StatefulWidget {
-  const ClaseistaUsuarios({super.key});
-
-  @override
-  StateListaUsuarios createState() => StateListaUsuarios();
-}
-class StateListaUsuarios extends State<ClaseistaUsuarios>{
-      eliminarElemento(int indice){
-    setState(() {
-      listaUsuarios.removeAt(indice);
-    });
-  }
-  tratarElemento(BuildContext context, int indice){
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(listaUsuarios[indice].toString())));
-  }
-  
-   @override
-  Widget build(BuildContext context) {
-    return ListView.builder(
-            itemCount: listaUsuarios.length,
-            itemBuilder: (context, index){
-              return Dismissible(
-                key: Key(listaUsuarios[index].toString()), 
-                onDismissed: (direction) {
-                  eliminarElemento(index);
-                },
-                child: Card(
-                  child: ListTile(
-                    title: Text(listaUsuarios[index].toString()),
-                    onTap: () {
-                      tratarElemento(context, index);
-                    },
-                  ),
-                ),
-                );
-        
-            },
-          );
-  }
-}
-*/

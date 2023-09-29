@@ -1,9 +1,11 @@
+import 'package:ejercicio_final/usuarios.dart';
 import 'package:flutter/material.dart';
 
-
+List<Usuarios> listaUsuarios = List.empty(growable: true);
 
 class ClaseMenu extends StatefulWidget {
   const ClaseMenu({super.key});
+    
 
   @override
   StateClaseMenu createState() => StateClaseMenu();
@@ -22,17 +24,23 @@ class StateClaseMenu extends State<ClaseMenu> {
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              ElevatedButton(
-                onPressed: () {
-                  Navigator.pushNamed(context, '/formulario');
-                },
-                child: const Text('Formulario'),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                child: ElevatedButton(
+                  onPressed: () {
+                    Navigator.pushNamed(context, '/formulario');
+                  },
+                  child: const Text('Formulario'),
+                ),
               ),
-              ElevatedButton(
-                onPressed: (){
-                  Navigator.pushNamed(context, '/formulario/listview');
-                }, 
-                child: const Text('Lista usuarios')),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                child: ElevatedButton(
+                    onPressed: () {
+                      Navigator.pushNamed(context, '/listview');
+                    },
+                    child: const Text('Lista usuarios')),
+              ),
             ],
           ),
         ],
