@@ -1,11 +1,11 @@
 import 'package:ejercicio_final/usuarios.dart';
 import 'package:flutter/material.dart';
 
-List<Usuarios> listaUsuarios = List.empty(growable: true);
+List<Usuarios> listaUsuarios =
+    List.empty(growable: true); //Crear Lista Usuarios
 
 class ClaseMenu extends StatefulWidget {
   const ClaseMenu({super.key});
-    
 
   @override
   StateClaseMenu createState() => StateClaseMenu();
@@ -28,7 +28,8 @@ class StateClaseMenu extends State<ClaseMenu> {
                 padding: const EdgeInsets.symmetric(horizontal: 16.0),
                 child: ElevatedButton(
                   onPressed: () {
-                    Navigator.pushNamed(context, '/formulario');
+                    Navigator.pushNamed(
+                        context, '/formulario'); //Boton ruta formulario
                   },
                   child: const Text('Formulario'),
                 ),
@@ -37,7 +38,8 @@ class StateClaseMenu extends State<ClaseMenu> {
                 padding: const EdgeInsets.symmetric(horizontal: 16.0),
                 child: ElevatedButton(
                     onPressed: () {
-                      Navigator.pushNamed(context, '/listview');
+                      Navigator.pushNamed(context,
+                          '/listview'); //Boton ruta listview(listausuarios)
                     },
                     child: const Text('Lista usuarios')),
               ),

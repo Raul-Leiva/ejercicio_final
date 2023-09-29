@@ -3,9 +3,7 @@ import 'package:ejercicio_final/usuarios.dart';
 import 'package:flutter/material.dart';
 import 'package:dni_nie_validator/dni_nie_validator.dart';
 
-var opcion = "";
-var usuario = "";
-const List<String> list = <String>['Particular', 'Empresa'];
+List<String> list = <String>['Particular', 'Empresa']; //Lista dropdownmenu
 
 class ClaseFormulario extends StatefulWidget {
   const ClaseFormulario({super.key});
@@ -18,7 +16,6 @@ class StateFormulario extends State<ClaseFormulario> {
   @override
   Widget build(BuildContext context) {
     const appTitle = 'Formulario';
-
     return Scaffold(
       appBar: AppBar(
         title: const Text(appTitle),
@@ -63,6 +60,7 @@ class StateClaseFormulario extends State<Formulario> {
   }
 
   Usuarios usuarioAtributos() {
+    //Dar atributos al usuario desde clase Usuarios
     var nombre = nombreController.text;
     var apellido1 = apellido1Controller.text;
     var apellido2 = apellido2Controller.text;
@@ -74,12 +72,14 @@ class StateClaseFormulario extends State<Formulario> {
   }
 
   agregarUsuario() {
+    //Agregar usuario a lista
     var usuario = usuarioAtributos();
     listaUsuarios.add(usuario);
     listaUsuarios;
   }
 
   String? validarCampo(String? valorCampo) {
+    //Validar campo obligatorio
     if (valorCampo!.isEmpty) {
       return "Este campo es obligatorio";
     }
@@ -87,6 +87,7 @@ class StateClaseFormulario extends State<Formulario> {
   }
 
   _validateDocument(String value) {
+    //validar documento de identidad
     String validation = '';
     if (value.isValidDNI() || value.isValidNIE()) {
       return null;
