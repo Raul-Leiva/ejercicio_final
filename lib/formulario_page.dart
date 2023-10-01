@@ -71,11 +71,10 @@ class StateClaseFormulario extends State<Formulario> {
     return Usuarios(nombre, apellido1, apellido2, fecha, dni, tipo);
   }
 
-  agregarUsuario() {
+  agregarUsuario(usuario) {
     //Agregar usuario a lista
     var usuario = usuarioAtributos();
     listaUsuarios.add(usuario);
-    listaUsuarios;
   }
 
   String? validarCampo(String? valorCampo) {
@@ -156,7 +155,7 @@ class StateClaseFormulario extends State<Formulario> {
             onTap: () {
               crearFecha();
             },
-            decoration: const InputDecoration(hintText: "Fecha de nacimmiento"),
+            decoration: const InputDecoration(hintText: "Fecha de nacimiento"),
           ),
           Padding(
             padding:
@@ -182,7 +181,7 @@ class StateClaseFormulario extends State<Formulario> {
               child: ElevatedButton(
                 onPressed: () {
                   if (_formKey.currentState!.validate()) {
-                    agregarUsuario();
+                    agregarUsuario(context);
                     ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(content: Text('Usuario Guardado')));
                   }
