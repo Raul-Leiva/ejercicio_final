@@ -5,7 +5,6 @@ import 'package:dni_nie_validator/dni_nie_validator.dart';
 
 List<String> list = <String>['Particular', 'Empresa']; //Lista dropdownmenu
 
-
 class Formulario extends StatefulWidget {
   const Formulario({super.key});
 
@@ -147,8 +146,7 @@ class StateClaseFormulario extends State<Formulario> {
               onSelected: (String? value) {
                 setState(() {
                   dropdownValue = value!;
-                }
-                );
+                });
               },
               dropdownMenuEntries:
                   list.map<DropdownMenuEntry<String>>((String value) {
